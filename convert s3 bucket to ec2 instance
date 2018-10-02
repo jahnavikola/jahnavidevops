@@ -1,0 +1,56 @@
+How to Mount S3 Bucket on CentOS/RHEL and Ubuntu using S3FS
+
+Step 1 – Remove Existing Packages
+### CentOS and RedHat Systems ###
+yum remove fuse fuse-s3fs
+
+### Ubuntu Systems ### 
+sudo apt-get remove fuse
+-------------------------------------
+Step 2: Install Required Packages
+### CentOS and RedHat Systems ###
+yum install gcc libstdc++-devel gcc-c++ curl-devel libxml2-devel openssl-devel mailcap
+
+### Ubuntu Systems ### 
+sudo apt-get install build-essential libcurl4-openssl-dev libxml2-dev mime-support
+-------------------------------------
+Step 3 – Download and Compile Fuse
+Download and compile latest version of fuse source code.
+
+cd /usr/src/
+wget  https://github.com/libfuse/libfuse/releases/download/fuse-3.1.0/fuse-3.1.0.tar.gz
+tar xzf fuse-3.1.0.tar.gz
+cd fuse-3.1.0
+./configure --prefix=/usr/local
+make && make install
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+ldconfig
+modprobe fuse
+--------------------------------------------------
+Step 4 – Download and Compile Latest S3FS
+
+cd /usr/src/
+git clone https://github.com/s3fs-fuse/s3fs-fuse.git
+cd s3fs-fuse
+./autogen.sh
+./configure
+make && make install
+----------------------------
+Step 5 – Setup Access Key
+
+we would require Access Key and Secret Key of your S3 Amazon account. Get these security keys from
+//for generaring the access key visit this link
+https://console.aws.amazon.com/iam/home?#/security_credential
+
+Note: Change AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY with your actual key values.
+echo AWS_ACCESS_KEY_ID:AWS_SECRET_ACCESS_KEY > ~/.passwd-s3fs
+chmod 600 ~/.passwd-s3fs
+-------------------------------------------------
+Step 6 – Mount S3 Bucket
+
+Finally mount your s3 bucket using following set of commands. 
+For this example, we are using s3 bucket name as mydbbackup and mount point as /s3mnt.
+
+mkdir /tmp/cache /s3mnt
+chmod 777 /tmp/cache /s3mnt
+s3fs -o use_cache=/tmp/cache mydbbackup /s3mnt
