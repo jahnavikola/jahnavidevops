@@ -1,0 +1,20 @@
+rajarani@admin:~$ aws configure
+AWS Access Key ID [****************2XDQ]: AKIAJSYZHDDHTLALPIRQ
+AWS Secret Access Key [****************32yZ]: 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
+Default region name [us-east-1]: us-east-1
+Default output format [json]: json
+rajarani@admin:~$ aws s3 mb bukt537
+usage: aws s3 mb <S3Path>
+Error: Invalid argument type
+rajarani@admin:~$ aws s3 mb s3://bukt537
+make_bucket: s3://bukt537/
+rajarani@admin:~$ aws s3 ls s3://bukt537
+rajarani@admin:~$ aws s3 cp //home/rajarani/Documents/links.odt s3://bukt537
+upload: Documents/links.odt to s3://bukt537/links.odt
+rajarani@admin:~$ aws s3 ls s3://bukt537
+2018-10-03 10:38:00      12397 links.odt
+rajarani@admin:~$ aws s3 rm links.odt s3://bukt537
+Unknown options: s3://bukt537
+rajarani@admin:~$ aws s3 rm s3://bukt537 links.odt 
+Unknown options: links.odt
+rajarani@admin:~$ 
